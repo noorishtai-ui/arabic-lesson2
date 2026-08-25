@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>مغامرة اسم العلم | الصف الثامن</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Tajawal:wght@400;500;700;800&display=swap');
+
+:root{
+  --navy:#14213d;
+  --blue:#2563eb;
+  --cyan:#06b6d4;
+  --gold:#f59e0b;
+  --green:#16a34a;
+  --red:#ef4444;
+  --cream:#fffaf0;
+  --card:#ffffff;
+  --ink:#172033;
+  --muted:#64748b;
+}
+*{box-sizing:border-box}
+body{
+  margin:0; min-height:100vh; color:var(--ink);
+  font-family:"Cairo","Tajawal",sans-serif;
+  background:
+    radial-gradient(circle at 10% 10%, #dbeafe 0 10%, transparent 28%),
+    radial-gradient(circle at 90% 15%, #cffafe 0 9%, transparent 25%),
+    linear-gradient(135deg,#eef6ff,#fffaf0 55%,#effcf7);
+}
+button{font-family:inherit}
+.app{max-width:1050px;margin:auto;padding:22px 16px 50px}
+.topbar{
+  display:flex;justify-content:space-between;align-items:center;gap:12px;
+  background:rgba(255,255,255,.86);backdrop-filter:blur(12px);
+  border:1px solid #e2e8f0;border-radius:24px;padding:13px 16px;
+  box-shadow:0 12px 35px rgba(15,23,42,.08);position:sticky;top:10px;z-index:5
+}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800}
+.logo{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;
+background:linear-gradient(135deg,var(--blue),var(--cyan));color:white;font-size:24px}
+.badges{display:flex;gap:8px;flex-wrap:wrap}
+.pill{background:#eff6ff;color:#1d4ed8;border-radius:999px;padding:7px 11px;font-weight:700;font-size:13px}
+.hero{
+ margin-top:22px;border-radius:30px;padding:30px 22px;color:white;overflow:hidden;position:relative;
+ background:linear-gradient(135deg,#172554,#2563eb 58%,#06b6d4);
+ box-shadow:0 20px 50px rgba(37,99,235,.24)
+}
+.hero:before,.hero:after{content:"";position:absolute;border-radius:50%;background:rgba(255,255,255,.09)}
+.hero:before{width:220px;height:220px;left:-80px;top:-90px}
+.hero:after{width:180px;height:180px;right:-60px;bottom:-100px}
+.hero h1{margin:0 0 8px;font-size:clamp(30px,6vw,54px);line-height:1.15}
+.hero p{margin:0;max-width:720px;font-size:17px;opacity:.92}
+.heroRow{display:flex;justify-content:space-between;align-items:end;gap:20px;position:relative;z-index:1}
+.character{font-size:74px;filter:drop-shadow(0 10px 8px rgba(0,0,0,.18));animation:float 2.5s ease-in-out infinite}
+@keyframes float{50%{transform:translateY(-8px) rotate(2deg)}}
+
+.card{background:rgba(255,255,255,.94);border:1px solid #e2e8f0;border-radius:28px;padding:22px;
+box-shadow:0 15px 45px rgba(15,23,42,.08);margin-top:18px}
+.learn{display:grid;grid-template-columns:1.2fr .8fr;gap:18px}
+@media(max-width:760px){.learn{grid-template-columns:1fr}.heroRow{align-items:center}.character{font-size:56px}}
+.lessonBox{background:#f8fafc;border-radius:20px;padding:18px}
+.lessonBox h2{margin-top:0;color:var(--navy)}
+.rule{font-size:20px;font-weight:800;color:#1d4ed8}
+.examples{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.example{padding:8px 13px;border-radius:12px;background:white;border:1px solid #dbeafe;font-weight:700}
+.tip{background:#fffbeb;border-right:5px solid var(--gold);padding:13px 15px;border-radius:14px;margin-top:12px}
+
+.quizHead{display:flex;justify-content:space-between;gap:12px;align-items:center}
+.progress{height:11px;background:#e2e8f0;border-radius:999px;overflow:hidden;margin:13px 0 20px}
+.progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--blue),var(--cyan));transition:.35s}
+.question{font-size:23px;font-weight:800;line-height:1.7;margin:10px 0 18px}
+.answers{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:620px){.answers{grid-template-columns:1fr}}
+.answer{
+  border:2px solid #e2e8f0;background:white;border-radius:18px;padding:15px;
+  text-align:right;font-size:17px;font-weight:700;cursor:pointer;transition:.18s
+}
+.answer:hover{transform:translateY(-2px);border-color:#93c5fd;background:#f8fbff}
+.answer.correct{border-color:#22c55e;background:#ecfdf5;color:#166534}
+.answer.wrong{border-color:#f87171;background:#fef2f2;color:#991b1b}
+.answer:disabled{cursor:default}
+.feedback{min-height:58px;margin-top:15px;border-radius:17px;padding:12px 15px;display:flex;align-items:center;gap:10px;font-weight:700}
+.feedback.good{background:#ecfdf5;color:#166534}
+.feedback.bad{background:#fef2f2;color:#991b1b}
+.next{
+  display:none;margin-top:15px;border:0;border-radius:16px;padding:13px 20px;
+  background:var(--navy);color:white;font-size:16px;font-weight:800;cursor:pointer
+}
+.next.show{display:inline-block}
+.result{display:none;text-align:center;padding:12px}
+.result.show{display:block}
+.scoreCircle{width:150px;height:150px;border-radius:50%;margin:12px auto;display:grid;place-items:center;
+background:conic-gradient(var(--gold) 0deg,#e2e8f0 0deg);font-size:32px;font-weight:800}
+.bigMessage{font-size:24px;font-weight:800;color:var(--navy)}
+.reward{font-size:64px;animation:pop .55s ease}
+@keyframes pop{0%{transform:scale(.3);opacity:0}80%{transform:scale(1.15)}100%{transform:scale(1)}}
+.restart{border:0;background:var(--blue);color:white;border-radius:16px;padding:13px 22px;font-weight:800;cursor:pointer}
+
+.footer{text-align:center;color:var(--muted);font-size:13px;margin-top:22px}
+.spark{position:fixed;pointer-events:none;z-index:20;font-size:22px;animation:fall 900ms ease-out forwards}
+@keyframes fall{to{transform:translate(var(--x),var(--y)) rotate(480deg);opacity:0}}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="topbar">
+    <div class="brand"><div class="logo">📚</div><div>مغامرة النحوي الصغير</div></div>
+    <div class="badges">
+      <div class="pill">الصف الثامن</div>
+      <div class="pill">🏆 نقاط: <span id="points">0</span></div>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="heroRow">
+      <div>
+        <h1>سرُّ اسم العلم 🕵️‍♂️</h1>
+        <p>تعلّم، اختر، واكتشف الكنز! هل تستطيع جمع 100 نقطة وإثبات أنك بطل اسم العلم؟</p>
+      </div>
+      <div class="character">🧭</div>
+    </div>
+  </section>
+
+  <section class="card learn">
+    <div class="lessonBox">
+      <h2>قبل أن تبدأ… تذكّر 🔎</h2>
+      <div class="rule">اسم العلم: اسم يدل على شخص أو مكان أو شيء معيّن بذاته.</div>
+      <div class="examples">
+        <span class="example">محمد</span><span class="example">ليلى</span>
+        <span class="example">دمشق</span><span class="example">الأردن</span>
+        <span class="example">دجلة</span>
+      </div>
+      <div class="tip">💡 خدعة البطل: إذا كان الاسم يحدد واحدًا معيّنًا دون أن تحتاج إلى وصف إضافي، فغالبًا هو <b>اسم علم</b>.</div>
+    </div>
+    <div class="lessonBox">
+      <h2>مهمتك 🎯</h2>
+      <p>أجب عن الأسئلة. بعض الأسئلة اختيار من متعدد، وبعضها يحتاج تفكيرًا سريعًا.</p>
+      <p><b>الإجابة الصحيحة = +20 نقطة ⭐</b></p>
+      <p><b>الإجابة الخاطئة لا تخصم نقاطًا.</b> حاول مرة أخرى وتعلّم من التفسير.</p>
+    </div>
+  </section>
+
+  <section class="card" id="quizCard">
+    <div class="quizHead">
+      <strong id="counter">السؤال 1 من 8</strong>
+      <strong>⭐ <span id="score">0</span></strong>
+    </div>
+    <div class="progress"><span id="bar"></span></div>
+    <div id="quizArea"></div>
+    <button class="next" id="nextBtn">السؤال التالي ➜</button>
+  </section>
+
+  <section class="card result" id="result">
+    <div class="reward" id="reward">🏆</div>
+    <div class="bigMessage" id="resultTitle"></div>
+    <div class="scoreCircle" id="scoreCircle"><span id="finalScore">0</span></div>
+    <p id="resultText"></p>
+    <button class="restart" onclick="restart()">🔄 العب من جديد</button>
+  </section>
+
+  <div class="footer">صُمّم ليكون التعلم ممتعًا وسريعًا ومناسبًا لطلاب الصف الثامن ✨</div>
+</div>
+
+<script>
+const questions = [
+ {q:"أي كلمة مما يأتي تُعد اسم علم؟", a:["مدينة","طالب","سارة","كتاب"], c:2, why:"سارة اسم لشخص معيّن، لذلك فهي اسم علم."},
+ {q:"أي جملة تحتوي على اسم علم؟", a:["ذهبتُ إلى المدرسة.","زار خالدٌ المكتبة.","قرأتُ كتابًا.","اشتريتُ قلمًا."], c:1, why:"خالد اسم شخص معيّن، فهو اسم علم."},
+ {q:"ما اسم العلم في الجملة: «سافرتُ إلى الأردنِ»؟", a:["سافرتُ","إلى","الأردن","لا يوجد"], c:2, why:"الأردن اسم مكان معيّن، فهو اسم علم."},
+ {q:"أي خيار ليس اسم علم؟", a:["مريم","دمشق","نهر","عمر"], c:2, why:"نهر اسم عام، وليس اسمًا لشخص أو مكان معيّن بذاته."},
+ {q:"اختر اسم العلم في: «يلعب سامرُ مع أصدقائه.»", a:["يلعب","سامر","أصدقائه","مع"], c:1, why:"سامر اسم شخص معيّن."},
+ {q:"أي كلمة يمكن أن تكون اسم علم لمكان معيّن؟", a:["بلد","مدينة","بغداد","شارع"], c:2, why:"بغداد اسم مدينة معيّنة، ولذلك هي اسم علم."},
+ {q:"صح أم خطأ: «محمد» اسم علم لأنه يدل على شخص معيّن.", a:["صح ✅","خطأ ❌"], c:0, why:"صحيح؛ محمد اسم يعيّن شخصًا بعينه."},
+ {q:"تحدي السرعة ⚡: أي مجموعة تتكوّن كلها من أسماء أعلام؟", a:["علي – دمشق – الأردن","طالب – مدرسة – كتاب","مدينة – نهر – جبل","معلم – بنت – صديق"], c:0, why:"علي ودمشق والأردن كلها أسماء لأعيان معيّنة."}
+];
+
+let index=0, score=0, answered=false;
+const quizArea=document.getElementById("quizArea");
+const nextBtn=document.getElementById("nextBtn");
+const points=document.getElementById("points");
+const scoreEl=document.getElementById("score");
+const counter=document.getElementById("counter");
+const bar=document.getElementById("bar");
+
+function render(){
+  answered=false;
+  const x=questions[index];
+  counter.textContent=`السؤال ${index+1} من ${questions.length}`;
+  bar.style.width=`${(index/questions.length)*100}%`;
+  nextBtn.classList.remove("show");
+  quizArea.innerHTML=`
+    <div class="question">${x.q}</div>
+    <div class="answers">${x.a.map((t,i)=>`<button class="answer" onclick="choose(${i})">${t}</button>`).join("")}</div>
+    <div id="feedback"></div>`;
+}
+function choose(i){
+  if(answered)return;
+  answered=true;
+  const x=questions[index];
+  const buttons=[...document.querySelectorAll(".answer")];
+  buttons.forEach(b=>b.disabled=true);
+  buttons[x.c].classList.add("correct");
+  const fb=document.getElementById("feedback");
+  if(i===x.c){
+    score+=20; scoreEl.textContent=score; points.textContent=score;
+    fb.className="feedback good";
+    fb.innerHTML="🎉 إجابة رائعة! +20 نقطة — "+x.why;
+    celebrate();
+  }else{
+    buttons[i].classList.add("wrong");
+    fb.className="feedback bad";
+    fb.innerHTML="💡 ليست الإجابة الصحيحة. "+x.why;
+  }
+  nextBtn.classList.add("show");
+  bar.style.width=`${((index+1)/questions.length)*100}%`;
+}
+nextBtn.onclick=()=>{
+  index++;
+  if(index<questions.length) render();
+  else finish();
+};
+function celebrate(){
+  const icons=["⭐","✨","🎉","🏆","💫"];
+  for(let i=0;i<12;i++){
+    const s=document.createElement("span");
+    s.className="spark"; s.textContent=icons[Math.floor(Math.random()*icons.length)];
+    s.style.left=(45+Math.random()*10)+"vw"; s.style.top=(35+Math.random()*10)+"vh";
+    s.style.setProperty("--x",((Math.random()-.5)*300)+"px");
+    s.style.setProperty("--y",((Math.random()-.2)*300)+"px");
+    document.body.appendChild(s); setTimeout(()=>s.remove(),950);
+  }
+}
+function finish(){
+  document.getElementById("quizCard").style.display="none";
+  const r=document.getElementById("result"); r.classList.add("show");
+  document.getElementById("finalScore").textContent=score;
+  const deg=(score/(questions.length*20))*360;
+  document.getElementById("scoreCircle").style.background=`conic-gradient(var(--gold) ${deg}deg,#e2e8f0 ${deg}deg)`;
+  let title,text,reward;
+  if(score===160){title="أسطورة اسم العلم! 👑";text="أجبت عن كل الأسئلة بشكل صحيح. أنت مستعد لأي تحدٍّ نحوي!";reward="👑";}
+  else if(score>=120){title="بطل النحو! 🏆";text="مستواك ممتاز جدًا. بقيت خطوة صغيرة نحو الكمال!";reward="🏆";}
+  else if(score>=80){title="مستكشف رائع! 🧭";text="أحسنت! راجع الأسئلة التي أخطأت فيها وستصبح أقوى.";reward="🧭";}
+  else {title="بداية موفقة! 🚀";text="لا بأس، الأبطال يتعلمون من المحاولات. أعد التحدي وحطّم رقمك!";reward="🚀";}
+  document.getElementById("resultTitle").textContent=title;
+  document.getElementById("resultText").textContent=text;
+  document.getElementById("reward").textContent=reward;
+  celebrate();
+}
+function restart(){
+  index=0;score=0;points.textContent=0;scoreEl.textContent=0;
+  document.getElementById("quizCard").style.display="block";
+  document.getElementById("result").classList.remove("show");
+  render(); window.scrollTo({top:0,behavior:"smooth"});
+}
+render();
+</script>
+</body>
+</html>
